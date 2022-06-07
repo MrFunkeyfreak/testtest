@@ -13,6 +13,7 @@ class UserServices {
     String lastName,
     String birthday,
     String gender,
+    String status,
 
   }) {
     FirebaseFirestore.instance.collection(adminsCollection).doc(uid).set({
@@ -23,6 +24,7 @@ class UserServices {
       'last name': lastName,
       'birthday': birthday,
       'gender': gender,
+      'status': status,
     });
   }
 

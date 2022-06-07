@@ -8,7 +8,7 @@ class UserModel {
   final String LASTNAME = "last name";
   final String BIRTHDAY = "birthday";
   final String GENDER = "gender";
-
+  final String STATUS = "status";
 
   String _uid;
   String _username;
@@ -17,6 +17,7 @@ class UserModel {
   String _lastName;
   String _birthday;
   String _gender;
+  String _status;
 
 //  getters
   String get uid => _uid;
@@ -26,6 +27,7 @@ class UserModel {
   String get lastName => _lastName;
   String get birthday => _birthday;
   String get gender => _gender;
+  String get stats => _status;
 
 
   UserModel.fromSnapshot(DocumentSnapshot snapshot) {
@@ -37,5 +39,6 @@ class UserModel {
     _lastName = data[LASTNAME];
     _birthday = data[BIRTHDAY];
     _gender = data[GENDER];
+    _status = data[STATUS];
   }
 }
