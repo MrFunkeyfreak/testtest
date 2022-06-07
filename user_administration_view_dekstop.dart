@@ -18,9 +18,8 @@ class UsersAdministrationViewDesktop extends StatefulWidget {
 
 class _UsersAdministrationViewDesktopState extends State<UsersAdministrationViewDesktop> {
 
-  final user = FirebaseAuth.instance.currentUser;  //check if user is logged in
   String uid = ('M0glOQKUwagZJGOyzVEU1JJgQo23');
-  var selectedId;
+  List<Map<String, dynamic>> selectedId;
   var entryList;
 
 
@@ -185,24 +184,9 @@ class _UsersAdministrationViewDesktopState extends State<UsersAdministrationView
 
                               TextButton.icon(
                                 onPressed: () => {
-
-                                  //selectedId = userTable.getSelected as Map<String, dynamic>,
-                                  //print(selectedId),
-
-
-
-                                  //return List<Map<String, dynamic>> selecteds = [];
-                                  //selectedId = userTable.getSelected(selectedId),
-                                  //print(selectedId.keys),
-                                  //print('Die Uid ist: '+ selectedId['uid']),
-
-
-                                  //print(selectedId['uid']),
-                                 // entryList = selectedId.entries.firstWhere((entry) => entry.value
-                                //== 'uid').key,
-                                 // print(true)
-
-
+                                  
+                                  //getSelected should return List<Map<String, dynamic>> of all the selected rows
+                                  selectedId = userTable.getSelected as List<Map<String, dynamic>>,
                                 },
                                 icon: Icon(
                                   IconData(0xe3b0, fontFamily: 'MaterialIcons'),
