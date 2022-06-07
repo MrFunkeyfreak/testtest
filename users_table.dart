@@ -186,11 +186,22 @@ class UsersTable with ChangeNotifier {
   onSelected(bool value, Map <String, dynamic> item){
     print("$value  $item ");
     if (value) {
-      selecteds.add(item);     //Liste von Map <String, dynamic>
+      selecteds.add(item);     //List of Map <String, dynamic>
     } else {
       selecteds.removeAt(selecteds.indexOf(item));
     }
     notifyListeners();
+  }
+  
+  getSelected(bool value, Map <String, dynamic> item){
+    print("$value  $item ");
+    if (value) {
+      selecteds.add(item);     //List of Map <String, dynamic>
+    } else {
+      selecteds.removeAt(selecteds.indexOf(item));
+    }
+    notifyListeners();
+    return selecteds;
   }
 
   onSelectAll(bool value){
