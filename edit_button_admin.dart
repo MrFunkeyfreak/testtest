@@ -58,6 +58,13 @@ class _EditButtonAdminState extends State<EditButtonAdmin> {
       onPressed: () =>
       { selectedRows = userTable.selecteds,
         if(selectedRows.length == 1) {
+          
+          usernameController.value = TextEditingValue(
+          text: selectedRows[0]['username'],
+          selection: TextSelection.fromPosition(
+            TextPosition(offset: selectedRows[0]['username'].length)
+          )
+        ),
 
 
 
