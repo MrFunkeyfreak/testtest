@@ -18,9 +18,11 @@ class UsersAdministrationViewDesktop extends StatefulWidget {
 
 class _UsersAdministrationViewDesktopState extends State<UsersAdministrationViewDesktop> {
 
-  String uid = ('M0glOQKUwagZJGOyzVEU1JJgQo23');
-  List<Map<String, dynamic>> selectedId;
-  var entryList;
+  final user = FirebaseAuth.instance.currentUser;  //check if user is logged in
+  String uid;
+  List<Map<String, dynamic>> selectedRow;
+  AuthProvider authproviderInstance = AuthProvider();
+
 
 
   @override
@@ -127,14 +129,53 @@ class _UsersAdministrationViewDesktopState extends State<UsersAdministrationView
                               SizedBox(width: 15,),
 
                               //edit-button + functionality
+
                               EditButtonAdmin(),
 
                               SizedBox(width: 15,),
 
                               TextButton.icon(
                                 onPressed: () async => {
-                                  await AuthProvider.deleteUser(uid),
-                                  print(uid + 'user gelöscht')
+                                  selectedRow = userTable.selecteds,
+                                  if(selectedRow.isEmpty){
+                                    showDialog(context: context, builder: (BuildContext context){
+                                      return AlertDialog(
+                                        title: Text("Error: Bitte wähle einen User aus."),
+                                        actions: [
+                                          TextButton(
+                                            child: Text("Ok"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          )
+                                        ],
+                                      );
+                                    })
+                                  },
+
+                                  if(selectedRow.length == 1){
+                                    uid = selectedRow[0]['uid'],
+                                    await AuthProvider.deleteUser(uid),
+                                    print(uid + 'user gelöscht')
+                                  },
+
+                                  if(selectedRow.length >= 2) {
+                                    //die uid von allen in der Liste durchgehen und rolle ändern
+                                    showDialog(context: context, builder: (BuildContext context){
+                                      return AlertDialog(
+                                        title: Text("Error: Bitte wähle genau einen User aus."),
+                                        actions: [
+                                          TextButton(
+                                            child: Text("Ok"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          )
+                                        ],
+                                      );
+                                    })
+                                  }
+
                                 },
                                 icon: Icon(
                                   IconData(0xe1bb, fontFamily: 'MaterialIcons'),
@@ -160,7 +201,39 @@ class _UsersAdministrationViewDesktopState extends State<UsersAdministrationView
                           Wrap (
                             children: [
                               TextButton.icon(
-                                onPressed: () => {
+                                onPressed: () async => {
+                                  selectedRow = userTable.selecteds,
+
+                                  if(selectedRow.isEmpty){
+                                    showDialog(context: context, builder: (BuildContext context){
+                                      return AlertDialog(
+                                        title: Text("Error: Bitte wähle einen User aus."),
+                                        actions: [
+                                          TextButton(
+                                            child: Text("Ok"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          )
+                                        ],
+                                      );
+                                    })
+                                  },
+
+                                  if(selectedRow.length == 1){
+                                    uid = selectedRow[0]['uid'],
+                                    await authproviderInstance.updateUserStatus(uid, 'gesperrt'),
+                                  },
+
+                                  if(selectedRow.length >= 2) {
+                                    //die uid von allen in der Liste durchgehen und rolle ändern
+
+                                    for (var i=0; i<selectedRow.length;i++){ //für alle uids in der Liste
+                                      await authproviderInstance.updateUserStatus(selectedRow[i]['uid'], 'gesperrt'),
+                                    },
+                                  },
+                                  userTable.selecteds.clear(),
+                                  userTable.initializeData(),
 
                                 },
                                 icon: Icon(
@@ -183,10 +256,37 @@ class _UsersAdministrationViewDesktopState extends State<UsersAdministrationView
                               SizedBox(width: 15,),
 
                               TextButton.icon(
-                                onPressed: () => {
-                                  
-                                  //getSelected should return List<Map<String, dynamic>> of all the selected rows
-                                  selectedId = userTable.getSelected as List<Map<String, dynamic>>,
+                                onPressed: () async => {
+
+                                  selectedRow = userTable.selecteds,
+                                  if(selectedRow.isEmpty){
+                                    showDialog(context: context, builder: (BuildContext context){
+                                      return AlertDialog(
+                                        title: Text("Error: Bitte wähle einen User aus."),
+                                        actions: [
+                                          TextButton(
+                                            child: Text("Ok"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          )
+                                        ],
+                                      );
+                                    })
+                                  },
+                                  if(selectedRow.length == 1){
+                                    uid = selectedRow[0]['uid'],
+                                    await authproviderInstance.updateUserStatus(uid, 'aktiv'),
+                                  },
+                                  if(selectedRow.length >= 2) {
+
+                                    for (var i=0; i<selectedRow.length;i++){
+                                      await authproviderInstance.updateUserStatus(selectedRow[i]['uid'], 'aktiv'),
+                                    },
+                                  },
+                                  userTable.selecteds.clear(),
+                                  userTable.initializeData(),
+
                                 },
                                 icon: Icon(
                                   IconData(0xe3b0, fontFamily: 'MaterialIcons'),
